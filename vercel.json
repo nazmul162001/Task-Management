@@ -1,0 +1,5 @@
+{
+  "buildCommand": "cross-env PRISMA_ENGINES_CHECKSUM_IGNORE_MISSING=1 prisma generate && next build",
+  "installCommand": "yarn install",
+  "framework": "nextjs"
+}

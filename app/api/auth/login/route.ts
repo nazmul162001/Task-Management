@@ -68,21 +68,36 @@ export async function POST(request: Request) {
       user: { id: user.id, username: user.username, email: user.email },
     });
 
+    // In Vercel/production, always use secure cookies (HTTPS required)
+    const isProduction = process.env.NODE_ENV === 'production' || process.env.VERCEL === '1';
+    
     response.cookies.set({
       name: COOKIE_NAME,
       value: token,
       httpOnly: true,
       sameSite: 'lax',
-      secure: process.env.NODE_ENV === 'production',
+      secure: isProduction,
       path: '/',
       maxAge: 60 * 60 * 24 * 7, // 7 days
     });
 
     return response;
-  } catch (error) {
-    console.error('[LOGIN]', error);
+  } catch (error: any) {
+    console.error('[LOGIN] Error:', error);
+    console.error('[LOGIN] Error message:', error?.message);
+    console.error('[LOGIN] Error stack:', error?.stack);
+    console.error('[LOGIN] Error name:', error?.name);
+    
+    // Provide more detailed error in development
+    const errorMessage = process.env.NODE_ENV === 'development' 
+      ? error?.message || 'Something went wrong while signing in.'
+      : 'Something went wrong while signing in.';
+    
     return NextResponse.json(
-      { error: 'Something went wrong while signing in.' },
+      { 
+        error: errorMessage,
+        ...(process.env.NODE_ENV === 'development' && { details: error?.stack })
+      },
       { status: 500 }
     );
   }
