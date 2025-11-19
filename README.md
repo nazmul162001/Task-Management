@@ -80,20 +80,15 @@ The application focuses on streamlined collaboration across teams, projects, and
 
 ## 🔑 Environment Variables
 
-Create `.env.local` with the following keys (values shown are examples):
+At minimum the API requires two private variables:
 
 ```
 DATABASE_URL="mongodb+srv://user:pass@cluster0.mongodb.net/taskmanager"
 JWT_SECRET="task-manager-secret-key"
-NEXT_PUBLIC_DEMO_ADMIN_USERNAME="admin"
-NEXT_PUBLIC_DEMO_ADMIN_EMAIL="admin@taskmanager.com"
-NEXT_PUBLIC_DEMO_ADMIN_PASSWORD="admin123"
-NEXT_PUBLIC_DEMO_USER_USERNAME="john"
-NEXT_PUBLIC_DEMO_USER_EMAIL="john@taskmanager.com"
-NEXT_PUBLIC_DEMO_USER_PASSWORD="john123"
 ```
 
-The `NEXT_PUBLIC_*` values feed the login form hints for quickly exploring the UI. Replace them with your own seeded users for production.
+> `DATABASE_URL` is the MongoDB connection string used by Prisma.  
+> `JWT_SECRET` signs the session tokens set in the auth cookies.
 
 ---
 
