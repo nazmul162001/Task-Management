@@ -1,7 +1,10 @@
 'use server';
 
-import bcrypt from 'bcryptjs';
+import { randomBytes, scrypt, timingSafeEqual } from 'crypto';
+import { promisify } from 'util';
 import { SignJWT, jwtVerify } from 'jose';
+
+const scryptAsync = promisify(scrypt);
 
 const secret = process.env.JWT_SECRET;
 
@@ -12,12 +15,25 @@ if (!secret) {
 const encoder = new TextEncoder();
 
 export async function hashPassword(password: string) {
-  const salt = await bcrypt.genSalt(10);
-  return bcrypt.hash(password, salt);
+  const salt = randomBytes(16).toString('hex');
+  const derivedKey = (await scryptAsync(password, salt, 64)) as Buffer;
+  return `${salt}:${derivedKey.toString('hex')}`;
 }
 
 export async function verifyPassword(password: string, hashedPassword: string) {
-  return bcrypt.compare(password, hashedPassword);
+  const [salt, storedKey] = hashedPassword.split(':');
+  if (!salt || !storedKey) {
+    return false;
+  }
+
+  const derivedKey = (await scryptAsync(password, salt, 64)) as Buffer;
+  const storedKeyBuffer = Buffer.from(storedKey, 'hex');
+
+  if (derivedKey.length !== storedKeyBuffer.length) {
+    return false;
+  }
+
+  return timingSafeEqual(derivedKey, storedKeyBuffer);
 }
 
 export async function createSessionToken(userId: string) {
