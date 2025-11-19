@@ -2,6 +2,8 @@ import { NextResponse } from 'next/server';
 import { prisma } from '@/app/lib/prisma';
 import { createSessionToken, verifyPassword } from '@/app/lib/auth';
 
+export const runtime = 'nodejs';
+
 interface LoginPayload {
   identifier?: string;
   password?: string;

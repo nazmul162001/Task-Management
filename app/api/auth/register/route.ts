@@ -2,6 +2,8 @@ import { NextResponse } from 'next/server';
 import { prisma } from '@/app/lib/prisma';
 import { hashPassword } from '@/app/lib/auth';
 
+export const runtime = 'nodejs';
+
 interface RegisterPayload {
   username?: string;
   email?: string;

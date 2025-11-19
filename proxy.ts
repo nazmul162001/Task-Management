@@ -6,7 +6,7 @@ const COOKIE_NAME = 'task_manager_token';
 const PUBLIC_ROUTES = ['/', '/api/auth/login', '/api/auth/register', '/api/auth/session'];
 const PROTECTED_ROUTES = ['/dashboard', '/teams', '/projects', '/tasks'];
 
-export async function middleware(request: NextRequest) {
+export async function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
   const token = request.cookies.get(COOKIE_NAME)?.value;
 
