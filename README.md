@@ -1,53 +1,123 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+## Task Management Dashboard
 
-## Getting Started
+A full-stack project tracking platform built with Next.js App Router, Prisma, and MongoDB. The live environment is deployed to Vercel: https://task-management-theta-one.vercel.app
 
-First, run the development server:
+The application focuses on streamlined collaboration across teams, projects, and tasks with real-time updates powered by Next.js Server Actions and Prisma queries.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+---
+
+## ✨ Core Features
+
+- **Secure Authentication** – Email/username login with bcrypt password hashing, JWT-based session cookies, and server-side auth guards for protected routes.
+- **Team & Member Management** – Create teams, assign members with capacity settings, and organize personnel across multiple projects.
+- **Project Lifecycle** – Add projects per team, attach owners, and track descriptions, timelines, and related tasks.
+- **Task Board** – Create, assign, prioritize, and update tasks with statuses (`Pending`, `In Progress`, `Done`) plus priority levels (`Low`, `Medium`, `High`).
+- **Activity Logs** – Automatic audit trail for key actions (e.g., reassignment, creation, updates) to keep everyone aligned.
+- **Redux-powered UI State** – Client state (forms, modals, optimistic updates) handled via RTK Query APIs for tasks, projects, teams, and logs.
+
+---
+
+## 🧱 Tech Stack
+
+| Layer      | Technology                                              |
+| ---------- | ------------------------------------------------------- |
+| Frontend   | Next.js 16 App Router, React 19, TypeScript, Tailwind 4 |
+| State Mgmt | Redux Toolkit + RTK Query                               |
+| Backend    | Next.js Route Handlers, Prisma                          |
+| Database   | MongoDB Atlas                                           |
+| Auth       | bcrypt, jose (JWT)                                      |
+| Deployment | Vercel (serverless, edge caching)                       |
+
+---
+
+## 🗂️ Project Structure (Highlights)
+
+- `app/api/**` – Route handlers for auth, tasks, teams, projects, reassignments, activity logs.
+- `app/lib/**` – Prisma client, auth helpers, middleware.
+- `app/src/components/**` – Modular UI (forms, modals, dashboards).
+- `app/redux/**` – Store, hooks, RTK Query slices for API interaction.
+- `prisma/schema.prisma` – MongoDB data models for users, teams, projects, tasks, and activity logs.
+
+---
+
+## ⚙️ Prerequisites
+
+- Node.js 18+
+- MongoDB instance/Atlas cluster
+- Package manager: npm, yarn, or pnpm
+
+---
+
+## 🚀 Local Development
+
+1. **Install dependencies**
+
+   ```bash
+   npm install
+   # or yarn install / pnpm install
+   ```
+
+2. **Generate Prisma client**
+
+   ```bash
+   npm run prisma:generate
+   ```
+
+3. **Run the dev server**
+
+   ```bash
+   npm run dev
+   # open http://localhost:3000
+   ```
+
+4. **Optional: push schema to DB**
+
+   ```bash
+   npm run prisma:push
+   ```
+
+---
+
+## 🔑 Environment Variables
+
+Create `.env.local` with the following keys (values shown are examples):
+
 ```
-
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
-
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
-
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## Environment Variables
-
-Create a `.env.local` file in the project root before running the app. It should define the database connection string for Prisma as well as the demo credentials shown in the login screen:
-
-```
-DATABASE_URL="mongodb://127.0.0.1:27017/task_management"
+DATABASE_URL="mongodb+srv://user:pass@cluster0.mongodb.net/taskmanager"
+JWT_SECRET="task-manager-secret-key"
 NEXT_PUBLIC_DEMO_ADMIN_USERNAME="admin"
 NEXT_PUBLIC_DEMO_ADMIN_EMAIL="admin@taskmanager.com"
 NEXT_PUBLIC_DEMO_ADMIN_PASSWORD="admin123"
 NEXT_PUBLIC_DEMO_USER_USERNAME="john"
 NEXT_PUBLIC_DEMO_USER_EMAIL="john@taskmanager.com"
 NEXT_PUBLIC_DEMO_USER_PASSWORD="john123"
-JWT_SECRET="task-manager-secret-key"
 ```
 
-Update these values to match your local or hosted services.
+The `NEXT_PUBLIC_*` values feed the login form hints for quickly exploring the UI. Replace them with your own seeded users for production.
 
-## Learn More
+---
 
-To learn more about Next.js, take a look at the following resources:
+## 🧪 Testing the App
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- Register a new account or use the demo credentials.
+- Create a team, add members, then create a project tied to that team.
+- Add tasks with different priorities/statuses and assign them to team members.
+- Reassign tasks to trigger activity logs and verify the audit trail.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+---
 
-## Deploy on Vercel
+## 📦 Deployment
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+1. Set the same environment variables in your hosting provider (Vercel recommended).
+2. Ensure `npm run postinstall` (Prisma generate) runs during build.
+3. Deploy via Git push or manual import—Vercel will create serverless functions for the API routes automatically.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+---
+
+## 📚 Additional Resources
+
+- [Next.js Docs](https://nextjs.org/docs)
+- [Prisma Docs](https://www.prisma.io/docs/)
+- [Redux Toolkit](https://redux-toolkit.js.org/)
+
+Feel free to open issues or PRs to extend workflows (e.g., notifications, reporting, kanban drag-and-drop). Happy shipping!
